@@ -13,8 +13,13 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -24,22 +29,26 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.biometricauth.BiometricPromptManager.BiometricResult
 import com.example.biometricauth.ui.theme.BiometricAuthTheme
 
+
+
 class MainActivity : AppCompatActivity() {
 
-    private val promptManager by lazy {
-        BiometricPromptManager(this)
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val promptManager = BiometricPromptManager(this)
         setContent {
             BiometricAuthTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background) {
+                    color = MaterialTheme.colorScheme.background.Marron) {
                     val biometricResult by promptManager.promptResult.collectAsState(
                         initial = null)
 
@@ -72,9 +81,20 @@ class MainActivity : AppCompatActivity() {
                                 tittle = "Simple prompt",
                                 description = "Simple prompt description"
                             )
-                        }) {
-                            Text(text = "Authenticate")
+                        },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEBC999)
+                            )
+                        ) {
+                            Text(
+                                text = "Authenticate",
+                                fontSize = 20.sp,
+                                color = Color(0xFFCD7700)
+                            )
                         }
+
+                        Spacer(modifier = Modifier.padding(15.dp))
+
                         biometricResult?.let { result ->
                             Text(
                                 text = when(result){
@@ -96,7 +116,9 @@ class MainActivity : AppCompatActivity() {
                                     BiometricResult.HarwareUnavailable -> {
                                         "Harware unavailable"
                                     }
-                                }
+                                },
+                                fontSize = 20.sp,
+                                color = Color(0xFFCD7700)
                             )
                         }
                     }
@@ -106,18 +128,8 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BiometricAuthTheme {
-        Greeting("Android")
+private val Color.Marron: Color
+    get() {
+        return Color(0xFF4d3227)
     }
-}
+
